@@ -1,0 +1,19 @@
+# Fact: Git and Verification Attestation Pipeline
+id: fact-attestation-git-001
+layer: current
+valid_from: 2026-10-20T05:27:00Z
+valid_to: infinity
+description: Git branching locations, verification attestation methods, and upstream coap.space listing requirements.
+github_account: adarrshpaul
+options_for_codebase:
+  option_a: "Independent Git Repo (e.g. adarrshpaul/coap-verified or adarrshpaul/coap-rust)"
+  option_b: "Feature Branch in local-agent-harness (e.g. feat/coap-verified-sansio)"
+attestation_methods:
+  - automated_ci: "GitHub Actions workflow running RFC tests, proptest fuzzing, PCAP generation, and aiocoap interop"
+  - cryptographic_attestation: "GitHub Artifact Attestation (gh attestation verify) & Sigstore cosign"
+  - interoperability_proof: "coap.me online ETSI test runner verification against a publicly deployed instance"
+coap_space_listing:
+  repo: "coap-technology/coap-technology.github.io"
+  target_file: "impls.html"
+  method: "GitHub Pull Request adding Rust #![no_std] implementation under Implementations list"
+status: verified

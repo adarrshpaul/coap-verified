@@ -1,0 +1,13 @@
+# Fact: CoAP Verification Harness Implemented
+id: fact-coap-verified-001
+layer: current
+valid_from: 2026-10-20T05:11:00Z
+valid_to: infinity
+description: Implemented and passed all 5 verification gates for CoAP RFC 7252 in efficient Rust.
+components:
+  - coap_codec: /Users/adarrsh/.gemini/antigravity/scratch/coap-verified/src/codec.rs
+  - rfc_tests: /Users/adarrsh/.gemini/antigravity/scratch/coap-verified/tests/rfc7252_unit_tests.rs
+  - fuzz_tests: /Users/adarrsh/.gemini/antigravity/scratch/coap-verified/tests/property_fuzz_tests.rs
+  - etsi_tests: /Users/adarrsh/.gemini/antigravity/scratch/coap-verified/tests/plugtest_etsi_suite.rs
+  - aiocoap_interop: /Users/adarrsh/.gemini/antigravity/scratch/coap-verified/tests/run_aiocoap_interop.py
+status: verified

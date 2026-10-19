@@ -1,0 +1,19 @@
+# Fact: Sans-IO FFI Architecture Blueprint (Python & Node.js)
+id: fact-sansio-ffi-coap-001
+layer: current
+valid_from: 2026-10-20T05:13:00Z
+valid_to: infinity
+description: Architectural design for wrapping zero-copy no_std CoAP Rust core into high-performance Python and Node.js libraries.
+key_architectural_decisions:
+  pattern: "Sans-IO State Machine (Host language owns the socket & event loop clock)"
+  memory_strategy: "Owner + Layout Span Indexing (Host owns the backing buffer, Rust returns byte offset ranges)"
+  python_ffi: "PyO3 + maturin with PyBuffer_FillInfo / memoryview slicing"
+  node_ffi: "napi-rs with Uint8Array.subarray() over shared Buffer"
+  threading_model: "Synchronous FFI calls on loop thread; no Tokio inside host event loop to avoid thread-hop tax (2-20µs overhead vs 50ns parse)"
+workspace_crates:
+  - coap-core: "#![no_std] no_alloc codec (pure borrowed &[u8])"
+  - coap-engine: "#![no_std] sans-io protocol state machine (retransmit, dedup, block, observe)"
+  - coap-host: "std glue containing OwnedMessage, PeerTable, and Layout types without PyO3/N-API dependencies"
+  - bindings/python: "PyO3 cdylib"
+  - bindings/node: "napi-rs cdylib"
+status: verified

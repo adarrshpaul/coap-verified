@@ -1,0 +1,58 @@
+name: CI & Attestation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    name: 5-Gate CoAP Verification
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install aiocoap
+        run: pip install aiocoap
+
+      - name: Gate 1 - RFC 7252 Golden Unit Tests
+        run: cargo test --test rfc7252_unit_tests
+
+      - name: Gate 2 - Property Fuzzing & Invariant Suite
+        run: cargo test --test property_fuzz_tests
+
+      - name: Gate 3 - Wireshark Dissector & PCAP Generation
+        run: cargo test --test wireshark_dissector_tests
+
+      - name: Gate 4 - ETSI Plugtest Conformance Suite
+        run: cargo test --test plugtest_etsi_suite
+
+      - name: Gate 5 - Live aiocoap Interoperability
+        run: |
+          cargo run --bin interop_server --features tokio &
+          SERVER_PID=$!
+          sleep 1
+          python3 tests/run_aiocoap_interop.py
+          kill -9 $SERVER_PID
+
+      - name: Build Library Artifact
+        run: cargo build --release --lib
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: 'target/release/libcoap_verified.*'

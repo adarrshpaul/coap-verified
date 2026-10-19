@@ -1,0 +1,19 @@
+# Fact: coap.space Spec Architecture & Verification Plan
+id: fact-coap-space-spec-001
+layer: current
+valid_from: 2026-10-20T05:12:00Z
+valid_to: infinity
+description: Map of coap.space/spec.html specifications and the exact 4-phase verification plan for Rust implementation.
+specifications:
+  core: "RFC 7252 (Standards Track)"
+  registries: "IANA CoRE Parameters (Response Codes, Option Numbers, Content-Formats)"
+  discovery: "RFC 6690 (CoRE Link-Format /.well-known/core)"
+  group_comm: "RFC 7390 (CoAP Multicast / Group Comm)"
+  application_profile: "OMA Lightweight M2M (LWM2M v1.0+)"
+reference_harnesses:
+  - coap.me: "Carsten Bormann's ETSI CoAP#4 online plugtest runner"
+  - td-coap4: "cabo/td-coap4 official test definitions"
+  - eclipse-californium: "Eclipse Californium plugtest & test suite"
+  - eclipse-leshan: "OMA LWM2M server"
+  - eclipse-wakaama: "OMA LWM2M client"
+status: planned

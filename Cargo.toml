@@ -1,0 +1,38 @@
+[package]
+name = "coap-verified"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["std"]
+std = []
+
+[dependencies]
+heapless = "0.8"
+tokio = { version = "1.38", features = ["full"], optional = true }
+
+[dev-dependencies]
+proptest = "1.4"
+hex-literal = "0.4"
+tokio = { version = "1.38", features = ["full"] }
+
+[[bin]]
+name = "interop_server"
+path = "src/bin/interop_server.rs"
+required-features = ["tokio"]
+
+[[test]]
+name = "rfc7252_unit_tests"
+path = "tests/rfc7252_unit_tests.rs"
+
+[[test]]
+name = "property_fuzz_tests"
+path = "tests/property_fuzz_tests.rs"
+
+[[test]]
+name = "plugtest_etsi_suite"
+path = "tests/plugtest_etsi_suite.rs"
+
+[[test]]
+name = "wireshark_dissector_tests"
+path = "tests/wireshark_dissector_tests.rs"
